@@ -1,28 +1,39 @@
+import java.util.ArrayList;
+
 
 public class FileSystem implements Runnable {
 	
-	// wstrzyknac w konstruktorze?
-	private RequestQueue requestQueue; // + jakis listener na queue
+	private RequestQueue requestQueue;
 	private Scheduler scheduler;
+	Collection<DataStorage> dataStorage;
+	
+	public FileSystem(RequestQueue requestQueue, Scheduler scheduler) {
+		this.requestQueue = requestQueue;
+		this.scheduler = scheduler;
+		this.scheduler.setSystem(this);
+		
+		dataStorage = new ArrayList<>();
+		dataStorage.add(new DataStorage(/* rozmiar, ... */));
+	}
 	
 	@Override
 	public void run() {
 		
 		for(;;) {
-			if(queue.empty()) wait
+			if(requestQueue.empty()) this.wait(); // Object.wait()
 			
-			processRequest(queue.removeFirst()) // w nowym watku?
+			processRequest(requestQueue.removeFirst());
 		}
 	}
 	
-	// handler, uzytkownik chce dostepu do pliku
-	void makeRequest(Request req) {
-		requestQueue.add(req);
+	void makeRequest(Request request) {
+		// tu wchodzi sterowanie innego watku:
+		requestQueue.add(request);
 		scheduler.sort(requestQueue); // uaktualnij kolejke
-		
+		this.notifyAll(); // for kontynuuje
 	}
 	
 	void processRequest(Request req) {
-		// przetwarza zadanie 
+		// to powinno byc w nowym watku??
 	}
 }
