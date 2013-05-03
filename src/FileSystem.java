@@ -1,39 +1,55 @@
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class FileSystem implements Runnable {
 	
-	private RequestQueue requestQueue;
+	private RequestQueue requests;
 	private Scheduler scheduler;
-	Collection<DataStorage> dataStorage;
+	Collection<DataStorage> storages;
 	
-	public FileSystem(RequestQueue requestQueue, Scheduler scheduler) {
-		this.requestQueue = requestQueue;
-		this.scheduler = scheduler;
-		this.scheduler.setSystem(this);
+	public FileSystem() {
 		
-		dataStorage = new ArrayList<>();
-		dataStorage.add(new DataStorage(/* rozmiar, ... */));
+		requests = new RequestQueue();
+		scheduler = new Scheduler(this);
+		
+		storages = new ArrayList<>();
+		storages.add(new DataStorage());
+		
+		Logger.getInstance().log("system uruchomiony!");
 	}
 	
 	@Override
-	public void run() {
+	public synchronized void run() {
 		
 		for(;;) {
-			if(requestQueue.empty()) this.wait(); // Object.wait()
 			
-			processRequest(requestQueue.removeFirst());
+			if(requests.isEmpty())
+				try { this.wait(); }
+				catch (InterruptedException e) { continue; }
+			
+			processRequest(requests.pop());
 		}
 	}
 	
-	void makeRequest(Request request) {
-		// tu wchodzi sterowanie innego watku:
-		requestQueue.add(request);
-		scheduler.sort(requestQueue); // uaktualnij kolejke
-		this.notifyAll(); // for kontynuuje
+	public synchronized void makeRequest(Request request) {
+		
+		requests.push(request);
+		
+		// tutaj scheduler powinien jakos kolejkowac requesty
+		
+		this.notifyAll();
 	}
 	
-	void processRequest(Request req) {
-		// to powinno byc w nowym watku??
+	private void processRequest(Request request) {
+		
+		// blokuje system
+		// to powinno byc w watku DataStorage
+		
+		Logger.getInstance().log("przetwarzam zadanie: " + request);
+		
+		try { Thread.sleep(200); }
+		catch (InterruptedException e) { }
+		
+		Logger.getInstance().log("zadanie gotowe: " + request);
 	}
 }
