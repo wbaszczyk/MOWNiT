@@ -5,7 +5,7 @@ public class FileSystem implements Runnable {
 	
 	private RequestQueue requests;
 	private Scheduler scheduler;
-	Collection<DataStorage> storages;
+	List<DataStorage> storages;
 	
 	public FileSystem() {
 		
@@ -14,9 +14,24 @@ public class FileSystem implements Runnable {
 		
 		storages = new ArrayList<>();
 		storages.add(new DataStorage());
+		storages.add(new DataStorage());
+		storages.add(new DataStorage());
+		// reszta magazynow ...
+		
+		for(DataStorage storage : storages) {
+			new Thread(storage).start();
+		}
 		
 		Logger.getInstance().log("system uruchomiony!");
 	}
+	
+	
+	
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	Random random = new Random(); // losuje magazyn do obslugi zadania :E
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	
 	
 	@Override
 	public synchronized void run() {
@@ -27,7 +42,10 @@ public class FileSystem implements Runnable {
 				try { this.wait(); }
 				catch (InterruptedException e) { continue; }
 			
-			processRequest(requests.pop());
+			Request next = requests.pop();
+			
+			DataStorage randomStorage = storages.get(random.nextInt(storages.size()));
+			randomStorage.addRequest(next);
 		}
 	}
 	
@@ -38,18 +56,5 @@ public class FileSystem implements Runnable {
 		// tutaj scheduler powinien jakos kolejkowac requesty
 		
 		this.notifyAll();
-	}
-	
-	private void processRequest(Request request) {
-		
-		// blokuje system
-		// to powinno byc w watku DataStorage
-		
-		Logger.getInstance().log("przetwarzam zadanie: " + request);
-		
-		try { Thread.sleep(200); }
-		catch (InterruptedException e) { }
-		
-		Logger.getInstance().log("zadanie gotowe: " + request);
 	}
 }
