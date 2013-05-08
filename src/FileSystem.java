@@ -25,14 +25,6 @@ public class FileSystem implements Runnable {
 		Logger.getInstance().log("system uruchomiony!");
 	}
 	
-	
-	
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	Random random = new Random(); // losuje magazyn do obslugi zadania :E
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	
-	
-	
 	@Override
 	public synchronized void run() {
 		
@@ -44,7 +36,7 @@ public class FileSystem implements Runnable {
 			
 			Request next = requests.pop();
 			
-			DataStorage randomStorage = storages.get(random.nextInt(storages.size()));
+			DataStorage randomStorage = storages.get(Random.nextInt(storages.size()));
 			randomStorage.addRequest(next);
 		}
 	}
