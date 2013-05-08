@@ -3,12 +3,12 @@ public class Main {
 	public static void main(String[] args) {
 
 		FileSystem system = new FileSystem();
-		new Thread(system).start();
+		//new Thread(system).start();
 
 		// podlacz klientow
 
 		for (int i = 0; i < 10; ++i) {
-			system.makeRequest(new Request(RequestType.Add));
+			system.makeRequest(new Request(RequestType.Add, "plik " + i));
 		}
 		Logger.getInstance().log("pierwsza pula klientow");
 
@@ -18,7 +18,7 @@ public class Main {
 		}
 
 		for (int i = 0; i < 10; ++i) {
-			system.makeRequest(new Request(RequestType.Read));
+			system.makeRequest(new Request(RequestType.Read, i));
 		}
 		Logger.getInstance().log("druga pula klientow");
 	}

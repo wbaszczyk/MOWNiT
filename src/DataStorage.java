@@ -46,15 +46,15 @@ public class DataStorage implements Runnable {
 		case Add:
 			files.add(File.createFile(request.toString()));
 			Logger.getInstance().log(
-					"processing request type: " + RequestType.Add);
+					"processing request type: " + RequestType.Add + ", " + request.getName());
 			break;
 		case Read:
 			Logger.getInstance().log(
-					"processing request type: " + RequestType.Read);
+					"processing request type: " + RequestType.Read + ", " + request.getFileId());
 			break;
 		case Write:
 			Logger.getInstance().log(
-					"processing request type: " + RequestType.Write);
+					"processing request type: " + RequestType.Write + ", " + request.getFileId());
 			break;
 		default:
 			Logger.getInstance().log("no such type");
