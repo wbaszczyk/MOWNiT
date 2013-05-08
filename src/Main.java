@@ -10,7 +10,7 @@ public class Main {
 		// podlacz klientow
 		
 		for(int i=0; i<10; ++i) {
-			system.makeRequest(new Request());
+			system.makeRequest(new Request(RequestType.Add));
 		}
 		Logger.getInstance().log("pierwsza pula klientow");
 		
@@ -18,7 +18,7 @@ public class Main {
 		catch (InterruptedException e) { }
 		
 		for(int i=0; i<10; ++i) {
-			system.makeRequest(new Request());
+			system.makeRequest(new Request(RequestType.Read));
 		}
 		Logger.getInstance().log("druga pula klientow");
 	}
