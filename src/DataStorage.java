@@ -32,5 +32,9 @@ public class DataStorage implements Runnable {
 		Logger.getInstance().log("przetwarzam zadanie: " + request);
 		
 		Logger.getInstance().log("zadanie gotowe: " + request);
+		
+Logger.getInstance().log("przetwarzam zadanie: " + request);
+		
+		Logger.getInstance().log("zadanie gotowe: " + request);
 	}
 }
