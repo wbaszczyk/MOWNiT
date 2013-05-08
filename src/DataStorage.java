@@ -11,7 +11,7 @@ public class DataStorage implements Runnable {
 	@Override
 	public synchronized void run() {
 		
-		for(;;) {
+		for(;;) { 
 			
 			if(requests.isEmpty())
 				try { this.wait(); }
@@ -31,9 +31,24 @@ public class DataStorage implements Runnable {
 
 		Logger.getInstance().log("przetwarzam zadanie: " + request);
 		
-		Logger.getInstance().log("zadanie gotowe: " + request);
-		
-Logger.getInstance().log("przetwarzam zadanie: " + request);
+		try {
+			 switch (request.getType()) {
+	            case Add:
+	                System.out.println("processing request type: " + RequestType.Add);
+	                break;
+	            case Read:
+	                System.out.println("processing request type: " + RequestType.Read);
+	                break;
+	            case Write:
+	                System.out.println("processing request type: " + RequestType.Write);
+	                break;
+	            default:
+	                System.out.println(" ");
+	                break;
+	        }
+			Thread.sleep(200);
+		}
+		catch (InterruptedException e) { }
 		
 		Logger.getInstance().log("zadanie gotowe: " + request);
 	}
