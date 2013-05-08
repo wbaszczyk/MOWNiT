@@ -1,11 +1,16 @@
+import java.util.*;
+
 
 public class DataStorage implements Runnable {
 	
 	private RequestQueue requests;
 	
+	private List<File> files;
+	
 	public DataStorage() {
 		
 		requests = new RequestQueue();
+		files = new ArrayList<>();
 	}
 	
 	@Override
