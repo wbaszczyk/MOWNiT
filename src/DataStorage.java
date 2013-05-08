@@ -31,9 +31,6 @@ public class DataStorage implements Runnable {
 
 		Logger.getInstance().log("przetwarzam zadanie: " + request);
 		
-		try { Thread.sleep(200); }
-		catch (InterruptedException e) { }
-		
 		Logger.getInstance().log("zadanie gotowe: " + request);
 	}
 }
