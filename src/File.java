@@ -14,4 +14,12 @@ public class File {
 	public static synchronized File createFile(String name) {
 		return new File(name);
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
 }

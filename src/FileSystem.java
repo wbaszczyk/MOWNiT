@@ -2,14 +2,18 @@ import java.util.*;
 
 public class FileSystem implements Runnable {
 
-	private RequestQueue requests;
-	private Scheduler scheduler;
-	List<DataStorage> storages;
+	//private RequestQueue requests;
+	private SystemScheduler systemScheduler;
+	private List<DataStorage> storages;
+	
+	public List<DataStorage> getStorages() {
+		return storages;
+	}
 
 	public FileSystem() {
 
-		requests = new RequestQueue();
-		scheduler = new Scheduler(this);
+		//requests = new RequestQueue();
+		systemScheduler = new SystemScheduler(this);
 
 		storages = new ArrayList<>();
 		storages.add(new DataStorage());
@@ -26,29 +30,32 @@ public class FileSystem implements Runnable {
 
 	@Override
 	public synchronized void run() {
-
+		for (;;) {
+			try { Thread.sleep(1000); }
+			catch (InterruptedException e) { }
+		}
+		/*
 		for (;;) {
 
-			if (requests.isEmpty())
+			//if (requests.isEmpty())
 				try {
 					this.wait();
 				} catch (InterruptedException e) {
 					continue;
 				}
 
-			Request next = requests.pop();
+			//Request next = requests.pop();
 
 			DataStorage randomStorage = storages.get(Random.nextInt(storages
 					.size()));
-			randomStorage.addRequest(next);
+			//randomStorage.addRequest(next);
 		}
+		*/
 	}
 
 	public synchronized void makeRequest(Request request) {
 
-		requests.push(request);
-
-		// tutaj scheduler powinien jakos kolejkowac requesty
+		systemScheduler.addRequest(request);
 
 		this.notifyAll();
 	}

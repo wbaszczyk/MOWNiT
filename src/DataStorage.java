@@ -5,6 +5,10 @@ public class DataStorage implements Runnable {
 	private RequestQueue requests;
 
 	private List<File> files;
+	
+	public List<File> getFiles() {
+		return files;
+	}
 
 	public DataStorage() {
 
