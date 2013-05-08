@@ -2,6 +2,7 @@ import java.util.*;
 
 public class DataStorage implements Runnable {
 
+	private StorageScheduler storageScheduler;
 	private RequestQueue requests;
 
 	private List<File> files;
@@ -12,6 +13,7 @@ public class DataStorage implements Runnable {
 
 	public DataStorage() {
 
+		storageScheduler=new StorageScheduler(this);
 		requests = new RequestQueue();
 		files = new ArrayList<>();
 	}
@@ -34,8 +36,12 @@ public class DataStorage implements Runnable {
 
 	public synchronized void addRequest(Request request) {
 
-		requests.push(request);
+		storageScheduler.addRequest(request);
 		this.notifyAll();
+	}
+
+	public RequestQueue getRequests() {
+		return requests;
 	}
 
 	private synchronized void processRequest(Request request) {

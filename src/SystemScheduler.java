@@ -28,7 +28,8 @@ public class SystemScheduler {
 						return;
 					}
 		default:
-			Logger.getInstance().log("nie ma pliku!");
+			Logger.getInstance().log("no such request type");
 		}
+		Logger.getInstance().log("no such file!");
 	}
 }
