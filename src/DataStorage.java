@@ -30,7 +30,7 @@ public class DataStorage implements Runnable {
 					continue;
 				}
 
-			processRequest(requests.pop());
+			processRequest(requests.popFront());
 		}
 	}
 

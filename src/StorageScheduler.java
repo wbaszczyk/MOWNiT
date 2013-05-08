@@ -9,6 +9,6 @@ public class StorageScheduler {
 
 	public void addRequest(Request request) {
 		
-		storage.getRequests().push(request);
+		storage.getRequests().pushBack(request);
 	}	
 }
