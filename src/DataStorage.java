@@ -34,16 +34,16 @@ public class DataStorage implements Runnable {
 		try {
 			 switch (request.getType()) {
 	            case Add:
-	                System.out.println("processing request type: " + RequestType.Add);
+	        		Logger.getInstance().log("processing request type: " + RequestType.Add);
 	                break;
 	            case Read:
-	                System.out.println("processing request type: " + RequestType.Read);
+	        		Logger.getInstance().log("processing request type: " + RequestType.Read);
 	                break;
 	            case Write:
-	                System.out.println("processing request type: " + RequestType.Write);
+	        		Logger.getInstance().log("processing request type: " + RequestType.Write);
 	                break;
 	            default:
-	                System.out.println(" ");
+	        		Logger.getInstance().log("no such type");
 	                break;
 	        }
 			Thread.sleep(200);

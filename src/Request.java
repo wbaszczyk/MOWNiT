@@ -1,7 +1,15 @@
 
 public class Request {
 	
-	// jakies dane uzytkownika dotyczace pliku
-	// ..
+	private RequestType type;
+	//
+	public Request(RequestType type){
+		
+		this.type=type;
+	}
 	
+	public RequestType getType(){
+		return type;
+	} 
+	 
 }
