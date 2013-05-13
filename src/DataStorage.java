@@ -5,9 +5,9 @@ public class DataStorage implements Runnable {
 	private StorageScheduler storageScheduler;
 	private RequestQueue requests;
 
-	private List<File> files;
+	private Map<Integer, File> files;
 	
-	public List<File> getFiles() {
+	public Map<Integer, File> getFiles() {
 		return files;
 	}
 
@@ -15,7 +15,7 @@ public class DataStorage implements Runnable {
 
 		storageScheduler=new StorageScheduler(this);
 		requests = new RequestQueue();
-		files = new ArrayList<>();
+		files = new HashMap<>();
 	}
 
 	@Override
@@ -46,31 +46,32 @@ public class DataStorage implements Runnable {
 
 	private synchronized void processRequest(Request request) {
 
-		Logger.getInstance().log("przetwarzam zadanie: " + request);
+		Logger.getInstance().log("przetwarzam zadanie: " + request.getType() + ", plik '" + request.getName() + "', (id " + request.getFileId() + ")");
 
 		switch (request.getType()) {
+		
 		case Add:
-			files.add(File.createFile(request.toString()));
-			Logger.getInstance().log(
-					"processing request type: " + RequestType.Add + ", " + request.getName());
+			File newFile = File.createFile(request.getName());
+			newFile.use();
+			files.put(newFile.getId(), newFile);
 			break;
+			
 		case Read:
-			Logger.getInstance().log(
-					"processing request type: " + RequestType.Read + ", " + request.getFileId());
-			break;
 		case Write:
-			Logger.getInstance().log(
-					"processing request type: " + RequestType.Write + ", " + request.getFileId());
+			File file = files.get(request.getFileId());
+			file.use();
 			break;
+			
 		default:
 			Logger.getInstance().log("no such type");
 			break;
 		}
+		
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
 		}
 
-		Logger.getInstance().log("zadanie gotowe: " + request);
+		Logger.getInstance().log("zadanie gotowe");
 	}
 }

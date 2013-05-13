@@ -1,8 +1,7 @@
 import java.util.*;
 
-public class FileSystem implements Runnable {
+public class FileSystem {
 
-	//private RequestQueue requests;
 	private SystemScheduler systemScheduler;
 	private List<DataStorage> storages;
 	
@@ -12,7 +11,6 @@ public class FileSystem implements Runnable {
 
 	public FileSystem() {
 
-		//requests = new RequestQueue();
 		systemScheduler = new SystemScheduler(this);
 
 		storages = new ArrayList<>();
@@ -26,31 +24,6 @@ public class FileSystem implements Runnable {
 		}
 
 		Logger.getInstance().log("system uruchomiony!");
-	}
-
-	@Override
-	public synchronized void run() {
-		for (;;) {
-			try { Thread.sleep(1000); }
-			catch (InterruptedException e) { }
-		}
-		/*
-		for (;;) {
-
-			//if (requests.isEmpty())
-				try {
-					this.wait();
-				} catch (InterruptedException e) {
-					continue;
-				}
-
-			//Request next = requests.pop();
-
-			DataStorage randomStorage = storages.get(Random.nextInt(storages
-					.size()));
-			//randomStorage.addRequest(next);
-		}
-		*/
 	}
 
 	public synchronized void makeRequest(Request request) {

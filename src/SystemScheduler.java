@@ -2,8 +2,6 @@ public class SystemScheduler {
 
 	private FileSystem system;
 
-	// dodaæ interfejs
-
 	public SystemScheduler(FileSystem system) {
 
 		this.system = system;
@@ -22,11 +20,10 @@ public class SystemScheduler {
 		case Read:
 		case Write:
 			for (DataStorage storage : system.getStorages())
-				for (File file : storage.getFiles())
-					if (file.getId() == request.getFileId()) {
-						storage.addRequest(request);
-						return;
-					}
+				if(storage.getFiles().containsKey(request.getFileId())) {
+					storage.addRequest(request);
+					return;
+				}
 		default:
 			Logger.getInstance().log("no such request type");
 		}

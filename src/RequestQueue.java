@@ -32,4 +32,9 @@ public class RequestQueue {
 	public synchronized boolean isEmpty() {
 		return pending.isEmpty();
 	}
+	
+	public synchronized int size()
+	{
+		return pending.size();
+	}
 }
