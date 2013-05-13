@@ -33,8 +33,11 @@ public class RequestQueue {
 		return pending.isEmpty();
 	}
 	
-	public synchronized int size()
-	{
+	public synchronized int size() {
 		return pending.size();
+	}
+	
+	public synchronized List<Request> getInnerList() {
+		return pending;
 	}
 }

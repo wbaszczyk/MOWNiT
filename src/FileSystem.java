@@ -15,10 +15,13 @@ public class FileSystem {
 
 		storages = new ArrayList<>();
 		storages.add(new DataStorage());
-		storages.add(new DataStorage());
-		storages.add(new DataStorage());
+		//storages.add(new DataStorage());
+		//storages.add(new DataStorage());
 		// reszta magazynow ...
-
+	}
+	
+	public void run()
+	{
 		for (DataStorage storage : storages) {
 			new Thread(storage).start();
 		}
