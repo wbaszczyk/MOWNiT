@@ -30,10 +30,8 @@ public class FileSystem {
 		Logger.getInstance().log("system uruchomiony!");
 	}
 
-	public synchronized void makeRequest(Request request) {
+	public void makeRequest(Request request) {
 
 		systemScheduler.addRequest(request);
-
-		this.notifyAll();
 	}
 }

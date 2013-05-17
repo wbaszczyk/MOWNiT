@@ -70,7 +70,7 @@ public class DataStorage implements Runnable {
 		}
 		
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			//
 		}
