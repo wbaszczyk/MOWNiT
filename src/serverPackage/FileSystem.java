@@ -1,3 +1,4 @@
+package serverPackage;
 import java.util.*;
 
 public class FileSystem {
@@ -15,8 +16,8 @@ public class FileSystem {
 
 		storages = new ArrayList<>();
 		storages.add(new DataStorage());
-		storages.add(new DataStorage());
-		storages.add(new DataStorage());
+		//storages.add(new DataStorage());
+		//storages.add(new DataStorage());
 		// reszta magazynow ...
 	}
 	

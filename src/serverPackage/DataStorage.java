@@ -1,3 +1,4 @@
+package serverPackage;
 import java.util.*;
 
 public class DataStorage implements Runnable {
@@ -35,7 +36,8 @@ public class DataStorage implements Runnable {
 	}
 
 	public synchronized void addRequest(Request request) {
-
+		
+		Logger.getInstance().log("kolejkuje!");
 		storageScheduler.addRequest(request);
 		this.notifyAll();
 	}
@@ -44,7 +46,7 @@ public class DataStorage implements Runnable {
 		return requests;
 	}
 
-	private synchronized void processRequest(Request request) {
+	private void processRequest(Request request) {
 
 		Logger.getInstance().log("przetwarzam zadanie: " + request.getType() + ", plik '" + request.getName() + "', (id " + request.getFileId() + ")");
 
@@ -68,7 +70,7 @@ public class DataStorage implements Runnable {
 		}
 		
 		try {
-			Thread.sleep(200);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			//
 		}

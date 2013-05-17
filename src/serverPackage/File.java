@@ -1,3 +1,4 @@
+package serverPackage;
 import java.util.Date;
 
 public class File {

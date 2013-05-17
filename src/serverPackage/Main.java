@@ -1,3 +1,4 @@
+package serverPackage;
 public class Main {
 
 	public static void main(String[] args) {
@@ -7,11 +8,12 @@ public class Main {
 		
 		// podlacz klientow
 
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < 100; ++i) {
 			system.makeRequest(new Request(RequestType.Add, "stary_plik " + i));
 		}
-		Logger.getInstance().log("pierwsza pula klientow");
+		//Logger.getInstance().log("pierwsza pula klientow");
 		
+		/*
 		
 		try {
 			Thread.sleep(200);
@@ -38,7 +40,7 @@ public class Main {
 			system.makeRequest(new Request(RequestType.Read, i));
 			Thread.yield();
 		}
-		
+		*/
 	}
 
 }

@@ -1,3 +1,4 @@
+package serverPackage;
 public class Request {
 
 	private RequestType type;
