@@ -20,24 +20,24 @@ public class DataStorage implements Runnable {
 	}
 
 	@Override
-	public synchronized void run() {
+	public void run() {
 
 		for (;;) {
-
-			if (requests.isEmpty())
-				try {
-					this.wait();
-				} catch (InterruptedException e) {
-					continue;
-				}
+			
+			synchronized (this) {
+				for(;;)
+					if (requests.isEmpty())
+						try { this.wait(); }
+						catch (InterruptedException e) { continue; }
+					else break;
+			}
 
 			processRequest(requests.popFront());
 		}
 	}
 
 	public synchronized void addRequest(Request request) {
-		
-		Logger.getInstance().log("kolejkuje!");
+
 		storageScheduler.addRequest(request);
 		this.notifyAll();
 	}
@@ -48,7 +48,7 @@ public class DataStorage implements Runnable {
 
 	private void processRequest(Request request) {
 
-		Logger.getInstance().log("przetwarzam zadanie: " + request.getType() + ", plik '" + request.getName() + "', (id " + request.getFileId() + ")");
+		Logger.getInstance().log("start: " + request.getType() + ", plik '" + request.getName() + "', (id " + request.getFileId() + ")");
 
 		switch (request.getType()) {
 		
@@ -69,8 +69,9 @@ public class DataStorage implements Runnable {
 			break;
 		}
 		
+		
 		try {
-			Thread.sleep(200);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			//
 		}
