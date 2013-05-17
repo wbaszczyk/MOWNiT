@@ -13,7 +13,7 @@ public class DataStorage implements Runnable {
 
 	public DataStorage() {
 
-		storageScheduler=new StorageScheduler(this);
+		storageScheduler = new StorageScheduler(this);
 		requests = new RequestQueue();
 		files = new HashMap<>();
 	}
