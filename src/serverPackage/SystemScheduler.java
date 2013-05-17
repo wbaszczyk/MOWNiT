@@ -25,9 +25,8 @@ public class SystemScheduler {
 					storage.addRequest(request);
 					return;
 				}
-		default:
-			Logger.getInstance().log("no such request type");
+			Logger.getInstance().log("file id " + request.getFileId() + " not found");
+			break;
 		}
-		Logger.getInstance().log("no such file!");
 	}
 }
