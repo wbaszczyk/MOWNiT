@@ -1,4 +1,5 @@
 package serverPackage;
+
 import java.util.Date;
 
 public class File {
@@ -8,6 +9,7 @@ public class File {
 	private int id;
 	private String name;
 	private Date lastAccess;
+	private int size;
 
 	private File(String name) {
 		this.id = nextId;
@@ -27,14 +29,20 @@ public class File {
 	public String getName() {
 		return name;
 	}
-	
+
 	public Date getLastAccess() {
 		return lastAccess;
 	}
 	
-	public void use()
-	{
-		lastAccess = new Date();
-		Logger.getInstance().log("u¿ywany plik: '" + getName() + "', (id " + getId() + ")");
+	public int getSize() {
+		return size;
 	}
+
+	public void use() {
+		lastAccess = new Date();
+		// Logger.getInstance().log("u¿ywany plik: '" + getName() + "', (id " +
+		// getId() + ")");
+	}
+
+	
 }

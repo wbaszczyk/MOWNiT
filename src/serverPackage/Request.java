@@ -30,5 +30,10 @@ public class Request {
 	public String getName() {
 		return name;
 	}
-
+	
+	@Override
+	public String toString()
+	{
+		return "Request: [type=" + type + "] [fileID=" + fileId + "] [name='" + name + "']";
+	}
 }

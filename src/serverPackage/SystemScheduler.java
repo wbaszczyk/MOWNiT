@@ -1,4 +1,5 @@
 package serverPackage;
+
 public class SystemScheduler {
 
 	private FileSystem system;
@@ -9,24 +10,39 @@ public class SystemScheduler {
 	}
 
 	public void addRequest(Request request) {
-		
-		switch (request.getType()) {
-		
+
+		RequestType type = request.getType();
+
+		switch (type) {
+
 		case Add:
-			int randomStorageId = Random.nextInt(system.getStorages().size());
-			DataStorage randomStorage = system.getStorages().get(randomStorageId);
-			randomStorage.addRequest(request);
-			return;
-			
-		case Read:
-		case Write:
-			for (DataStorage storage : system.getStorages())
-				if(storage.getFiles().containsKey(request.getFileId())) {
-					storage.addRequest(request);
-					return;
-				}
-			Logger.getInstance().log("file id " + request.getFileId() + " not found");
+			handleAddRequest(request);
 			break;
+		case Read:
+			handleAccessRequest(request);
+			break;
+		case Write:
+			handleAccessRequest(request);
+			break;
+		default:
+			Logger.getInstance().log("unknown request: " + type.toString());
 		}
+	}
+
+	private void handleAddRequest(Request request) {
+		int randomStorageId = Random.nextInt(system.getStorages().size());
+		DataStorage randomStorage = system.getStorages().get(randomStorageId);
+		randomStorage.addRequest(request);
+	}
+
+	private void handleAccessRequest(Request request) {
+		for (DataStorage storage : system.getStorages())
+			if (storage.containsFile(request.getFileId())) {
+				storage.addRequest(request);
+				return;
+			}
+
+		Logger.getInstance().log(
+				"file [id=" + request.getFileId() + "] not found");
 	}
 }

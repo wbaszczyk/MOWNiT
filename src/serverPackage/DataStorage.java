@@ -1,81 +1,109 @@
 package serverPackage;
+
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class DataStorage implements Runnable {
 
-	private StorageScheduler storageScheduler;
-	private RequestQueue requests;
+	// parameters
+	int totalSize;
+	int usedSize;
+	int freeSize;
 
+	private StorageScheduler storageScheduler;
+	private BlockingQueue<Request> requests;
 	private Map<Integer, File> files;
-	
-	public Map<Integer, File> getFiles() {
-		return files;
+
+	public File getFile(int fileID) {
+		return files.get(fileID);
 	}
 
-	public DataStorage() {
+	public synchronized boolean containsFile(int fileID) {
+		return files.containsKey(fileID);
+	}
+
+	public DataStorage(int size) {
+
+		totalSize = size;
+		usedSize = 0;
+		freeSize = totalSize;
 
 		storageScheduler = new StorageScheduler(this);
-		requests = new RequestQueue();
+		requests = new PriorityBlockingQueue<>(10, storageScheduler);
 		files = new HashMap<>();
 	}
+	
 
 	@Override
 	public void run() {
 
 		for (;;) {
-			
-			synchronized (this) {
-				for(;;)
-					if (requests.isEmpty())
-						try { this.wait(); }
-						catch (InterruptedException e) { continue; }
-					else break;
-			}
 
-			processRequest(requests.popFront());
+			try {
+				Request request = requests.take();
+				processRequest(request);
+			} catch (InterruptedException e) {
+				Logger.getInstance().log("DataStorage.requests.take() failed");
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public synchronized void addRequest(Request request) {
+	public void addRequest(Request request) {
 
-		storageScheduler.addRequest(request);
-		this.notifyAll();
-	}
-
-	public RequestQueue getRequests() {
-		return requests;
+		try {
+			requests.put(request);
+		} catch (InterruptedException e) {
+			Logger.getInstance().log("DataStorage.requests.put() failed");
+			e.printStackTrace();
+		}
 	}
 
 	private void processRequest(Request request) {
-
-		Logger.getInstance().log("start: " + request.getType() + ", plik '" + request.getName() + "', (id " + request.getFileId() + ")");
-
-		switch (request.getType()) {
 		
+		RequestType type = request.getType();
+		
+		Logger.getInstance().log(request.toString());
+
+		switch (type) {
+
 		case Add:
-			File newFile = File.createFile(request.getName());
-			newFile.use();
-			files.put(newFile.getId(), newFile);
+			handleAddRequest(request);
 			break;
-			
 		case Read:
+			handleReadRequest(request);
+			break;
 		case Write:
-			File file = files.get(request.getFileId());
-			file.use();
+			handleWriteRequest(request);
 			break;
-			
 		default:
-			Logger.getInstance().log("no such type");
-			break;
+			Logger.getInstance().log("unknown request: " + type.toString());
 		}
-		
-		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			//
-		}
+	}
+	
+	private void handleAddRequest(Request request)
+	{
+		File newFile = File.createFile(request.getName());
+		newFile.use();
+		files.put(newFile.getId(), newFile);
+	}
+	
+	private void handleReadRequest(Request request)
+	{
+		File file = getFile(request.getFileId());
+		file.use();
 
-		Logger.getInstance().log("zadanie gotowe");
+		try { Thread.sleep(1000); }
+		catch (InterruptedException e) { }
+	}
+	
+	private void handleWriteRequest(Request request)
+	{
+		File file = getFile(request.getFileId());
+		file.use();
+
+		try { Thread.sleep(1000); }
+		catch (InterruptedException e) { }
 	}
 }
