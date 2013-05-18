@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
@@ -15,24 +16,27 @@ public class MyPanel extends JPanel {
 	public static final int HEIGHT = 100;
 	public static final int WIDTH = 300;
 	private JButton button;
-	private JTextPane textPane;
+	private JTextPane logPane, id;
 	private JRadioButton addButton, readButton, writeButton, deleteButton;
+	private JLabel label;
 
 	public MyPanel() {
 
 		button = new ButtonAction(this);
-		textPane = new MyTextPane();
+		logPane = new MyTextPane(false);
+		id = new MyTextPane(true);
 		addButton = new MyRadioButton("Add");
 		readButton = new MyRadioButton("Read");
 		writeButton = new MyRadioButton("Write");
 		deleteButton= new MyRadioButton("Delete");
+		addButton.setSelected(true);
+		label = new JLabel("Put file name");
 		
 		ButtonGroup bgroup = new ButtonGroup();
 		bgroup.add(addButton);
 		bgroup.add(readButton);
 		bgroup.add(writeButton);
 		bgroup.add(deleteButton);
-		addButton.setSelected(true);
 		
 		JPanel radioPanel = new JPanel();
 		radioPanel.setLayout(new GridLayout(3, 1));
@@ -48,11 +52,16 @@ public class MyPanel extends JPanel {
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		add(radioPanel);
 		add(button);
-		add(textPane);
+		add(label);
+		add(id);
+		add(logPane);
 	}
 
-	public JTextPane getTextPane() {
-		return textPane;
+	public JTextPane getLogPane() {
+		return logPane;
+	}
+	public JTextPane getIdPane() {
+		return id;
 	}
 
 	public String getSelectedRadio() {

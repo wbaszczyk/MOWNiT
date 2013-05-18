@@ -28,10 +28,24 @@ public class Server extends Thread {
 						server.getInputStream());
 
 				String request = in.readUTF();
-				String requestType = request.substring(0, request.indexOf('/'));
+				String requestTypeStr = request.substring(0,
+						request.indexOf(':'));
+				String requestFileId = request.substring(
+						request.indexOf(':') + 1, request.indexOf('/'));
 				System.out.println(request);
-				system.makeRequest(new Request(
-						RequestType.getType(requestType), "plik"));
+
+				int fileId = 0;
+				RequestType requestType = RequestType.getType(requestTypeStr);
+				if (requestType == RequestType.Add)
+					system.makeRequest(new Request(requestType, 0, requestFileId));
+				else {
+					try {
+						fileId = Integer.parseInt(requestFileId);
+						system.makeRequest(new Request(requestType, fileId, ""));
+					} catch (NumberFormatException e) {
+						Logger.getInstance().log("Can't parse ID file");
+					}
+				}
 
 				DataOutputStream out = new DataOutputStream(
 						server.getOutputStream());
