@@ -43,8 +43,9 @@ public class SystemScheduler {
 			public int compare(DataStorage o1, DataStorage o2) {
 				return (int) Math.abs(o1.getFillFactor() - o2.getFillFactor());
 			}
-
 		});
+		
+		
 
 		int randomStorageId = Random.nextInt(system.getStorages().size());
 		DataStorage randomStorage = system.getStorages().get(randomStorageId);

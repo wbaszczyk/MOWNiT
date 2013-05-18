@@ -85,6 +85,8 @@ public class DataStorage implements Runnable {
 		case Write:
 			handleWriteRequest(request);
 			break;
+		case Delete:
+			handleDeleteRequest(request);
 		default:
 			Logger.getInstance().log("unknown request: " + type.toString());
 		}
@@ -118,5 +120,11 @@ public class DataStorage implements Runnable {
 
 		try { Thread.sleep(1000); }
 		catch (InterruptedException e) { }
+	}
+	
+	private void handleDeleteRequest(Request request) {
+		synchronized(this) {
+			files.remove(request.getFileId());
+		}
 	}
 }
