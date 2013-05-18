@@ -16,7 +16,7 @@ public class MyPanel extends JPanel {
 	public static final int WIDTH = 300;
 	private JButton button;
 	private JTextPane textPane;
-	private JRadioButton addButton, readButton, writeButton;
+	private JRadioButton addButton, readButton, writeButton, deleteButton;
 
 	public MyPanel() {
 
@@ -25,11 +25,13 @@ public class MyPanel extends JPanel {
 		addButton = new MyRadioButton("Add");
 		readButton = new MyRadioButton("Read");
 		writeButton = new MyRadioButton("Write");
-
+		deleteButton= new MyRadioButton("Delete");
+		
 		ButtonGroup bgroup = new ButtonGroup();
 		bgroup.add(addButton);
 		bgroup.add(readButton);
 		bgroup.add(writeButton);
+		bgroup.add(deleteButton);
 		addButton.setSelected(true);
 		
 		JPanel radioPanel = new JPanel();
@@ -37,6 +39,7 @@ public class MyPanel extends JPanel {
 		radioPanel.add(addButton);
 		radioPanel.add(readButton);
 		radioPanel.add(writeButton);
+		radioPanel.add(deleteButton);
 
 		radioPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEtchedBorder(), "Type"));
@@ -58,8 +61,9 @@ public class MyPanel extends JPanel {
 			return addButton.toString();
 		else if (readButton.isSelected())
 			return readButton.toString();
-		else
+		else if (writeButton.isSelected())
 			return writeButton.toString();
+		else return deleteButton.toString();
 
 	}
 }

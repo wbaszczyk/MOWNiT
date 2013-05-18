@@ -25,6 +25,7 @@ public class MyTextPane extends JTextPane {
 		doc.setParagraphAttributes(0, 0, standard, true);
 		this.setBackground(szary);
 		this.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+		this.setEditable(false);
 		
 	}
 }
