@@ -23,9 +23,8 @@ public class SystemScheduler {
 			handleAddRequest(request);
 			break;
 		case Read:
-			handleAccessRequest(request);
-			break;
 		case Write:
+		case Delete:
 			handleAccessRequest(request);
 			break;
 		default:
