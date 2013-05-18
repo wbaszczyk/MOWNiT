@@ -40,11 +40,12 @@ public class ServerMonitor implements Runnable {
 	List<StorageInfo> storages;
 
 	public ServerMonitor(FileSystem system) {
+		
 		this.system = system;
 
 		storages = new ArrayList<>();
 
-		for (DataStorage ds : system.getStorages())
+		for (DataStorage ds : this.system.getStorages())
 			storages.add(new StorageInfo(ds));
 	}
 

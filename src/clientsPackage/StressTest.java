@@ -18,7 +18,7 @@ public class StressTest {
 		new Thread(monitor).start();
 		
 		
-		int testSize = 512;
+		int testSize = 300;
 		int iter = 0;
 		List<Integer> files = new ArrayList<>();
 		
