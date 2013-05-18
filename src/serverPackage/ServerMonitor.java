@@ -1,22 +1,18 @@
 package serverPackage;
 
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.*;
 import javax.swing.*;
 
 public class ServerMonitor implements Runnable {
 	
-	private FileSystem system;
 	
 	private JFrame window;
 	private JPanel barsPanel;
-	private JScrollPane scrollPane;
 	Map<DataStorage, JProgressBar> bars;
 	
 	public ServerMonitor(FileSystem system)
 	{
-		this.system = system;
 		
 		bars = new HashMap<>();
 		
