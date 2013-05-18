@@ -1,72 +1,129 @@
 package serverPackage;
 
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.*;
+
 import javax.swing.*;
 
+class StorageInfo {
+	private DataStorage storage;
+
+	public JLabel name;
+	public JProgressBar bar;
+	public JLabel status;
+
+	public StorageInfo(DataStorage ds) {
+		storage = ds;
+
+		name = new JLabel(storage.toString());
+		bar = new JProgressBar(0, 100);
+		status = new JLabel("");
+	}
+
+	public void update() {
+		double barValue = 100 * storage.getFillFactor();
+		bar.setValue((int) barValue);
+
+		status.setText(storage.getState().toString());
+	}
+}
+
 public class ServerMonitor implements Runnable {
-	
+
 	private FileSystem system;
-	
+
 	private JFrame window;
 	private JPanel barsPanel;
-	private JScrollPane scrollPane;
-	Map<DataStorage, JProgressBar> bars;
-	
-	public ServerMonitor(FileSystem system)
-	{
+	private JScrollPane leftPane;
+	private JScrollPane rightPane;
+	private JTextArea log;
+	List<StorageInfo> storages;
+
+	public ServerMonitor(FileSystem system) {
 		this.system = system;
-		
-		bars = new HashMap<>();
-		
-		for(DataStorage ds : system.getStorages())
-			bars.put(ds, new JProgressBar(0, 100));
+
+		storages = new ArrayList<>();
+
+		for (DataStorage ds : system.getStorages())
+			storages.add(new StorageInfo(ds));
 	}
 
 	@Override
 	public void run() {
-		
+
 		initGUI();
-		
-		for(;;)
-		{
-			try { Thread.sleep(500); }
-			catch (InterruptedException e) { }
-			
+
+		for (;;) {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+			}
+
 			updateGUI();
 		}
 	}
-	
-	private void initGUI()
-	{
-		barsPanel = new JPanel();
-		//barsPanel.setLayout(new BoxLayout(barsPanel, BoxLayout.Y_AXIS));
-		barsPanel.setLayout(new GridLayout(bars.size(), 2));
-		
-		for(DataStorage ds : bars.keySet()) {
-			barsPanel.add(new JLabel(ds.toString()));
-			barsPanel.add(bars.get(ds));
-		}
-		
-		/*
-		for(JProgressBar pb : bars.values()) {
-			
-			barsPanel.add(pb);
-		}*/
-		
-		window = new JFrame("Empty Window");
+
+	private void initGUI() {
+
+		initBarsPanel();
+		leftPane = new JScrollPane(barsPanel);
+		leftPane.setBorder(BorderFactory.createTitledBorder("Data Storages"));
+		initLog();
+		rightPane = new JScrollPane(log);
+		rightPane.setBorder(BorderFactory.createTitledBorder("Server log"));
+
+		JPanel contents = new JPanel();
+		contents.setLayout(new BoxLayout(contents, BoxLayout.X_AXIS));
+		contents.add(leftPane);
+		contents.add(rightPane);
+
+		window = new JFrame("Server Monitor");
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		window.add(barsPanel);
+		window.add(contents);
 		window.pack();
 		window.setVisible(true);
 	}
-	
-	private void updateGUI()
-	{
-		for(DataStorage ds : bars.keySet()) {
-			bars.get(ds).setValue((int)(100*ds.getFillFactor()));
+
+	private void initBarsPanel() {
+		barsPanel = new JPanel();
+		barsPanel.setLayout(new GridLayout(storages.size(), 3));
+
+		for (StorageInfo si : storages) {
+			barsPanel.add(si.name);
+			barsPanel.add(si.bar);
+			barsPanel.add(si.status);
 		}
+	}
+
+	private void initLog() {
+		log = new JTextArea();
+		log.setEditable(false);
+
+		writeLog("Server Monitor, " + new Date().toString() + "\n");
+	}
+
+	private void writeLog(String message) {
+		log.setText(String.format("%s%s%n", log.getText(), message));
+	}
+
+	private void updateGUI() {
+		for (StorageInfo si : storages)
+			si.update();
+
+		Queue<String> messages = Logger.getInstance().grabMessages();
+
+		while (!messages.isEmpty()) {
+			writeLog(messages.poll());
+			scrollLog();
+		}
+	}
+
+	private void scrollLog() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JScrollBar bar = rightPane.getVerticalScrollBar();
+				bar.setValue(bar.getMaximum());
+			}
+		});
 	}
 }

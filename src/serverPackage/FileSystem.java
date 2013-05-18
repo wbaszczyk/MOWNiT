@@ -16,15 +16,18 @@ public class FileSystem {
 		systemScheduler = new SystemScheduler(this);
 
 		storages = new ArrayList<>();
-		storages.add(new DataStorage(1024*128));
-		storages.add(new DataStorage(1024*32));
-		storages.add(new DataStorage(1024*64));
-		// reszta magazynow ...
+		
+		for(int i=0; i<20; ++i) {
+			int storageSize = 1024 * 32 * (1 + Random.nextInt(8));
+			storages.add(new DataStorage(storageSize));
+		}
 	}
 
 	public void run() {
+		
 		for (DataStorage storage : storages) {
-			new Thread(storage).start();
+			//new Thread(storage).start();
+			storage.start();
 		}
 
 		Logger.getInstance().log("system uruchomiony!");

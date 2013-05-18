@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-public class DataStorage implements Runnable {
+public class DataStorage extends Thread /*implements Runnable*/ {
 
 	// storage parameters
 	private int totalSpace;
