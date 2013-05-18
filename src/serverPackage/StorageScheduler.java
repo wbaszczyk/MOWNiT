@@ -23,8 +23,8 @@ public class StorageScheduler implements Comparator<Request> {
 		if (o2.getType() == RequestType.Add)
 			return -1; // Add has highest priority
 
-		File f1 = storage.getFile(o1.getFileId());
-		File f2 = storage.getFile(o2.getFileId());
+		File f1 = storage.getFile(o1.getFileID());
+		File f2 = storage.getFile(o2.getFileID());
 
 		return f2.getLastAccess().compareTo(f1.getLastAccess());
 	}

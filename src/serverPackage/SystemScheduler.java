@@ -53,12 +53,12 @@ public class SystemScheduler {
 
 	private void handleAccessRequest(Request request) {
 		for (DataStorage storage : system.getStorages())
-			if (storage.containsFile(request.getFileId())) {
+			if (storage.containsFile(request.getFileID())) {
 				storage.addRequest(request);
 				return;
 			}
 
 		Logger.getInstance().log(
-				"file [id=" + request.getFileId() + "] not found");
+				"file [id=" + request.getFileID() + "] not found");
 	}
 }

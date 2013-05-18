@@ -107,7 +107,7 @@ public class DataStorage implements Runnable {
 	
 	private void handleReadRequest(Request request)
 	{
-		File file = getFile(request.getFileId());
+		File file = getFile(request.getFileID());
 		file.use();
 
 		try { Thread.sleep(1000); }
@@ -116,7 +116,7 @@ public class DataStorage implements Runnable {
 	
 	private void handleWriteRequest(Request request)
 	{
-		File file = getFile(request.getFileId());
+		File file = getFile(request.getFileID());
 		file.use();
 
 		try { Thread.sleep(1000); }
@@ -125,7 +125,7 @@ public class DataStorage implements Runnable {
 	
 	private void handleDeleteRequest(Request request) {
 		synchronized(this) {
-			files.remove(request.getFileId());
+			files.remove(request.getFileID());
 		}
 	}
 }
