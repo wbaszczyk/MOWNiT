@@ -11,15 +11,16 @@ public class File {
 	private Date lastAccess;
 	private int size;
 
-	private File(String name) {
+	private File(String name, int size) {
 		this.id = nextId;
 		nextId++;
 		this.name = name;
+		this.size = size;
 		this.lastAccess = new Date();
 	}
 
-	public static synchronized File createFile(String name) {
-		return new File(name);
+	public static synchronized File createFile(String name, int size) {
+		return new File(name, size);
 	}
 
 	public int getID() {

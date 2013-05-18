@@ -95,7 +95,9 @@ public class DataStorage implements Runnable {
 	
 	private void handleAddRequest(Request request)
 	{
-		File newFile = File.createFile(request.getName());
+		int fileSize = request.getFileID();
+		
+		File newFile = File.createFile(request.getName(), fileSize);
 		newFile.use();
 		
 		synchronized(this) {
