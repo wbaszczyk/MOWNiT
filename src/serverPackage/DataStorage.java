@@ -10,15 +10,15 @@ public class DataStorage implements Runnable {
 	private int totalSpace;
 	private int usedSpace;
 	private int freeSpace;
-	
+
 	public synchronized int getFreeSpace() {
 		return freeSpace;
 	}
-	
+
 	public synchronized double getFillFactor() {
-		return (double)usedSpace/totalSpace;
+		return (double) usedSpace / totalSpace;
 	}
-	
+
 	private StorageScheduler storageScheduler;
 	private BlockingQueue<Request> requests;
 	private Map<Integer, File> files;
@@ -41,7 +41,6 @@ public class DataStorage implements Runnable {
 		requests = new PriorityBlockingQueue<>(10, storageScheduler);
 		files = new HashMap<>();
 	}
-	
 
 	@Override
 	public void run() {
@@ -52,7 +51,8 @@ public class DataStorage implements Runnable {
 				Request request = requests.take();
 				processRequest(request);
 			} catch (InterruptedException e) {
-				Logger.getInstance().log("DataStorage.requests.take() interrupted");
+				Logger.getInstance().log(
+						"DataStorage.requests.take() interrupted");
 				e.printStackTrace();
 			}
 		}
@@ -69,9 +69,9 @@ public class DataStorage implements Runnable {
 	}
 
 	private void processRequest(Request request) {
-		
+
 		RequestType type = request.getType();
-		
+
 		Logger.getInstance().log(request.toString());
 
 		switch (type) {
@@ -92,48 +92,52 @@ public class DataStorage implements Runnable {
 			Logger.getInstance().log("unknown request: " + type.toString());
 		}
 	}
-	
-	private void handleAddRequest(Request request)
-	{
+
+	private void handleAddRequest(Request request) {
 		int fileSize = request.getFileID();
-		
+
 		File newFile = File.createFile(request.getName(), fileSize);
 		newFile.use();
-		
-		synchronized(this) {
+
+		synchronized (this) {
 			files.put(newFile.getID(), newFile);
 			usedSpace += newFile.getSize();
 			freeSpace -= newFile.getSize();
 		}
-		
+
 		Logger.getInstance().log("New file: " + newFile);
 	}
-	
-	private void handleReadRequest(Request request)
-	{
+
+	private void handleReadRequest(Request request) {
 		File file = getFile(request.getFileID());
 		file.use();
 
 		Logger.getInstance().log("Reading file: " + file);
-		try { Thread.sleep(1000); }
-		catch (InterruptedException e) { }
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
 	}
-	
-	private void handleWriteRequest(Request request)
-	{
+
+	private void handleWriteRequest(Request request) {
 		File file = getFile(request.getFileID());
 		file.use();
 
 		Logger.getInstance().log("Writing file: " + file);
-		try { Thread.sleep(1000); }
-		catch (InterruptedException e) { }
-	}
-	
-	private void handleDeleteRequest(Request request) {
-		synchronized(this) {
-			File file = getFile(request.getFileID());
-			files.remove(file.getID());
-			Logger.getInstance().log("Deleted file: " + file);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
 		}
+	}
+
+	private void handleDeleteRequest(Request request) {
+		File file = getFile(request.getFileID());
+		synchronized (this) {
+			files.remove(file.getID());
+			usedSpace -= file.getSize();
+			freeSpace += file.getSize();
+		}
+
+		Logger.getInstance().log("Deleted file: " + file);
 	}
 }

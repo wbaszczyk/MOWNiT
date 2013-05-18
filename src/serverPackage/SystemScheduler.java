@@ -40,7 +40,7 @@ public class SystemScheduler {
 
 			@Override
 			public int compare(DataStorage o1, DataStorage o2) {
-				return (int) Math.abs(o1.getFillFactor() - o2.getFillFactor());
+				return (int) Math.abs(o2.getFillFactor() - o1.getFillFactor());
 			}
 		});
 		

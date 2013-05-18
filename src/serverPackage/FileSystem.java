@@ -16,9 +16,9 @@ public class FileSystem {
 		systemScheduler = new SystemScheduler(this);
 
 		storages = new ArrayList<>();
-		storages.add(new DataStorage(1024*1024*1024));
-		// storages.add(new DataStorage(1024*1024*1024));
-		// storages.add(new DataStorage(1024*1024*1024));
+		storages.add(new DataStorage(1024*128));
+		storages.add(new DataStorage(1024*32));
+		storages.add(new DataStorage(1024*64));
 		// reszta magazynow ...
 	}
 
