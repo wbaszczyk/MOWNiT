@@ -45,10 +45,20 @@ public class SystemScheduler {
 		});
 		
 		
-
-		int randomStorageId = Random.nextInt(system.getStorages().size());
-		DataStorage randomStorage = system.getStorages().get(randomStorageId);
-		randomStorage.addRequest(request);
+		/*
+		 * Request.fileID przechowuje rozmiar w przypadku Add
+		 */
+		
+		int randomSize = 1024*(1 + Random.nextInt(10));
+		request.setFileID(randomSize);
+		
+		for(DataStorage ds : storages)
+			if(ds.getFreeSpace() >= randomSize) {
+				ds.addRequest(request);
+				return;
+			}
+		
+		Logger.getInstance().log("All storages full!");
 	}
 
 	private void handleAccessRequest(Request request) {

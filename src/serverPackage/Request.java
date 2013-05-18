@@ -15,6 +15,10 @@ public class Request {
 	public RequestType getType() {
 		return type;
 	}
+	
+	public void setFileID(int val) {
+		fileID = val;
+	}
 
 	public int getFileID() {
 		return fileID;
