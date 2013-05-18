@@ -114,6 +114,7 @@ public class DataStorage implements Runnable {
 		File file = getFile(request.getFileID());
 		file.use();
 
+		Logger.getInstance().log("Reading file: " + file);
 		try { Thread.sleep(1000); }
 		catch (InterruptedException e) { }
 	}
@@ -123,13 +124,16 @@ public class DataStorage implements Runnable {
 		File file = getFile(request.getFileID());
 		file.use();
 
+		Logger.getInstance().log("Writing file: " + file);
 		try { Thread.sleep(1000); }
 		catch (InterruptedException e) { }
 	}
 	
 	private void handleDeleteRequest(Request request) {
 		synchronized(this) {
-			files.remove(request.getFileID());
+			File file = getFile(request.getFileID());
+			files.remove(file.getID());
+			Logger.getInstance().log("Deleted file: " + file);
 		}
 	}
 }

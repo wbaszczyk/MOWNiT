@@ -14,6 +14,8 @@ public class Server extends Thread {
 		serverSocket.setSoTimeout(10000);
 		system = new FileSystem();
 		system.run();
+		ServerMonitor monitor =new ServerMonitor(system);
+		new Thread(monitor).start();
 	}
 
 	public void run() {

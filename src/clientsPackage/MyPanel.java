@@ -57,6 +57,10 @@ public class MyPanel extends JPanel {
 		add(logPane);
 	}
 
+	public JLabel getLabel() {
+		return label;
+	}
+
 	public JTextPane getLogPane() {
 		return logPane;
 	}
