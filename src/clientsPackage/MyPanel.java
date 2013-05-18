@@ -1,6 +1,8 @@
 package clientsPackage;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -8,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 
 public class MyPanel extends JPanel {
@@ -19,6 +22,7 @@ public class MyPanel extends JPanel {
 	private JTextPane logPane, id;
 	private JRadioButton addButton, readButton, writeButton, deleteButton;
 	private JLabel label;
+	private ActionListener btnGrpListener = new BtnGrpListener();
 
 	public MyPanel() {
 
@@ -31,15 +35,20 @@ public class MyPanel extends JPanel {
 		deleteButton= new MyRadioButton("Delete");
 		addButton.setSelected(true);
 		label = new JLabel("Put file name");
+		JScrollPane jsp = new JScrollPane(logPane);
 		
 		ButtonGroup bgroup = new ButtonGroup();
 		bgroup.add(addButton);
+		addButton.addActionListener(btnGrpListener);
 		bgroup.add(readButton);
+		readButton.addActionListener(btnGrpListener);
 		bgroup.add(writeButton);
+		writeButton.addActionListener(btnGrpListener);
 		bgroup.add(deleteButton);
+		deleteButton.addActionListener(btnGrpListener);
 		
 		JPanel radioPanel = new JPanel();
-		radioPanel.setLayout(new GridLayout(3, 1));
+		radioPanel.setLayout(new GridLayout(4, 1));
 		radioPanel.add(addButton);
 		radioPanel.add(readButton);
 		radioPanel.add(writeButton);
@@ -47,14 +56,19 @@ public class MyPanel extends JPanel {
 
 		radioPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEtchedBorder(), "Type"));
-
-		setLayout(new FlowLayout());
+		
+		JPanel butNamLab=new JPanel();
+		butNamLab.setLayout(new GridLayout(3, 1));
+		butNamLab.add(button);
+		butNamLab.add(label);
+		butNamLab.add(id);
+		
+		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		add(radioPanel);
-		add(button);
-		add(label);
-		add(id);
-		add(logPane);
+		add(radioPanel,BorderLayout.LINE_START);
+		add(butNamLab,BorderLayout.BEFORE_FIRST_LINE);
+		add(jsp,BorderLayout.CENTER);
+		
 	}
 
 	public JLabel getLabel() {
@@ -79,4 +93,14 @@ public class MyPanel extends JPanel {
 		else return deleteButton.toString();
 
 	}
+
+	private class BtnGrpListener implements ActionListener {
+
+	    public void actionPerformed(ActionEvent ae) {
+	    	if(ae.getActionCommand()==addButton.toString())
+	    		label.setText("Put name file");
+	    	else label.setText("Put id file");
+	    }
+	 }
 }
+
