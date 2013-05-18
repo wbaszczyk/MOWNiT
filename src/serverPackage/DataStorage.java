@@ -87,6 +87,7 @@ public class DataStorage implements Runnable {
 			break;
 		case Delete:
 			handleDeleteRequest(request);
+			break;
 		default:
 			Logger.getInstance().log("unknown request: " + type.toString());
 		}
