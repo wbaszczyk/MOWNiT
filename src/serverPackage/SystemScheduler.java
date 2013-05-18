@@ -1,5 +1,9 @@
 package serverPackage;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class SystemScheduler {
 
 	private FileSystem system;
@@ -30,6 +34,18 @@ public class SystemScheduler {
 	}
 
 	private void handleAddRequest(Request request) {
+
+		List<DataStorage> storages = system.getStorages();
+
+		Collections.sort(storages, new Comparator<DataStorage>() {
+
+			@Override
+			public int compare(DataStorage o1, DataStorage o2) {
+				return (int) Math.abs(o1.getFillFactor() - o2.getFillFactor());
+			}
+
+		});
+
 		int randomStorageId = Random.nextInt(system.getStorages().size());
 		DataStorage randomStorage = system.getStorages().get(randomStorageId);
 		randomStorage.addRequest(request);

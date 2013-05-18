@@ -6,16 +6,24 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 public class DataStorage implements Runnable {
 
-	// parameters
-	int totalSize;
-	int usedSize;
-	int freeSize;
-
+	// storage parameters
+	private int totalSpace;
+	private int usedSpace;
+	private int freeSpace;
+	
+	public synchronized int getFreeSpace() {
+		return freeSpace;
+	}
+	
+	public synchronized double getFillFactor() {
+		return (double)usedSpace/totalSpace;
+	}
+	
 	private StorageScheduler storageScheduler;
 	private BlockingQueue<Request> requests;
 	private Map<Integer, File> files;
 
-	public File getFile(int fileID) {
+	public synchronized File getFile(int fileID) {
 		return files.get(fileID);
 	}
 
@@ -25,9 +33,9 @@ public class DataStorage implements Runnable {
 
 	public DataStorage(int size) {
 
-		totalSize = size;
-		usedSize = 0;
-		freeSize = totalSize;
+		totalSpace = size;
+		usedSpace = 0;
+		freeSpace = totalSpace;
 
 		storageScheduler = new StorageScheduler(this);
 		requests = new PriorityBlockingQueue<>(10, storageScheduler);
@@ -44,7 +52,7 @@ public class DataStorage implements Runnable {
 				Request request = requests.take();
 				processRequest(request);
 			} catch (InterruptedException e) {
-				Logger.getInstance().log("DataStorage.requests.take() failed");
+				Logger.getInstance().log("DataStorage.requests.take() interrupted");
 				e.printStackTrace();
 			}
 		}
@@ -55,7 +63,7 @@ public class DataStorage implements Runnable {
 		try {
 			requests.put(request);
 		} catch (InterruptedException e) {
-			Logger.getInstance().log("DataStorage.requests.put() failed");
+			Logger.getInstance().log("DataStorage.requests.put() interrupted");
 			e.printStackTrace();
 		}
 	}
@@ -86,7 +94,12 @@ public class DataStorage implements Runnable {
 	{
 		File newFile = File.createFile(request.getName());
 		newFile.use();
-		files.put(newFile.getId(), newFile);
+		
+		synchronized(this) {
+			files.put(newFile.getId(), newFile);
+			usedSpace += newFile.getSize();
+			freeSpace -= newFile.getSize();
+		}
 	}
 	
 	private void handleReadRequest(Request request)
