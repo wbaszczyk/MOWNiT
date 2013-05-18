@@ -99,10 +99,12 @@ public class DataStorage implements Runnable {
 		newFile.use();
 		
 		synchronized(this) {
-			files.put(newFile.getId(), newFile);
+			files.put(newFile.getID(), newFile);
 			usedSpace += newFile.getSize();
 			freeSpace -= newFile.getSize();
 		}
+		
+		Logger.getInstance().log("New file: " + newFile);
 	}
 	
 	private void handleReadRequest(Request request)

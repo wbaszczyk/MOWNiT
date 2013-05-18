@@ -22,7 +22,7 @@ public class File {
 		return new File(name);
 	}
 
-	public int getId() {
+	public int getID() {
 		return id;
 	}
 
@@ -40,9 +40,10 @@ public class File {
 
 	public void use() {
 		lastAccess = new Date();
-		// Logger.getInstance().log("u¿ywany plik: '" + getName() + "', (id " +
-		// getId() + ")");
 	}
 
-	
+	@Override
+	public String toString() {
+		return "File: [fileID=" + id + "] [name='" + name + "']";
+	}
 }
