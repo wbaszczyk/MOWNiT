@@ -25,7 +25,11 @@ public class StorageScheduler implements Comparator<Request> {
 
 		File f1 = storage.getFile(o1.getFileID());
 		File f2 = storage.getFile(o2.getFileID());
-
-		return f2.getLastAccess().compareTo(f1.getLastAccess());
+		
+		int sizeDiff = f2.getSize() - f2.getSize();
+		
+		if(Math.abs(sizeDiff) < 0.2*f2.getSize())
+			return f2.getLastAccess().compareTo(f1.getLastAccess());
+		else return sizeDiff/Math.abs(sizeDiff);
 	}
 }

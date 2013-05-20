@@ -106,6 +106,10 @@ public class DataStorage extends Thread /*implements Runnable*/ {
 		}
 
 		Logger.getInstance().log("New file: " + newFile);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+		}
 	}
 
 	private void handleReadRequest(Request request) {
@@ -114,7 +118,7 @@ public class DataStorage extends Thread /*implements Runnable*/ {
 
 		Logger.getInstance().log("Reading file: " + file);
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(file.getSize()/10);
 		} catch (InterruptedException e) {
 		}
 	}
@@ -125,7 +129,7 @@ public class DataStorage extends Thread /*implements Runnable*/ {
 
 		Logger.getInstance().log("Writing file: " + file);
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(file.getSize()/10);
 		} catch (InterruptedException e) {
 		}
 	}
@@ -139,5 +143,9 @@ public class DataStorage extends Thread /*implements Runnable*/ {
 		}
 
 		Logger.getInstance().log("Deleted file: " + file);
+		try {
+			Thread.sleep(file.getSize()/10);
+		} catch (InterruptedException e) {
+		}
 	}
 }
