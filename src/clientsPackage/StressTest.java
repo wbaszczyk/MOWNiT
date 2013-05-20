@@ -18,7 +18,7 @@ public class StressTest {
 		new Thread(monitor).start();
 		
 		
-		int testSize = 300;
+		int testSize = 20*20;
 		int iter = 0;
 		List<Integer> files = new ArrayList<>();
 		
@@ -33,16 +33,13 @@ public class StressTest {
 			catch (InterruptedException e) { }
 		}
 		
+		try { Thread.sleep(1000); }
+		catch (InterruptedException e) { }
+		
 		
 		for(int i=0; i<testSize; ++i) {
 			
-			int action = serverPackage.Random.nextInt(4);
-			
-			if(action == 3) {
-				files.add(iter);
-				iter++;
-				system.makeRequest(new Request(RequestType.Add, 0, "plik " + iter));
-			}
+			int action = serverPackage.Random.nextInt(3);
 			
 			int randIndex = serverPackage.Random.nextInt(files.size());
 			int actionIndex = files.remove(randIndex);
@@ -59,6 +56,9 @@ public class StressTest {
 				system.makeRequest(new Request(RequestType.Delete, actionIndex, ""));
 				break;
 			}
+			
+			try { Thread.sleep(30); }
+			catch (InterruptedException e) { }
 		}
 	}
 

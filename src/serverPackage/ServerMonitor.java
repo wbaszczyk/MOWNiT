@@ -56,7 +56,7 @@ public class ServerMonitor implements Runnable {
 
 		for (;;) {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 			}
 
