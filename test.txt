@@ -1,2 +1,3 @@
 tekst testowy
 test
+trzecia linijka
