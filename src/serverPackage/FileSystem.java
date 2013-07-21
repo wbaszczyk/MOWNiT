@@ -17,7 +17,7 @@ public class FileSystem {
 
 		storages = new ArrayList<>();
 		
-		for(int i=0; i<20; ++i) {
+		for(int i=0; i<60; ++i) {
 			int storageSize = 1024 * (100 + Random.nextInt(50));
 			storages.add(new DataStorage(storageSize));
 		}

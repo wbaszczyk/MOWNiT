@@ -69,7 +69,9 @@ public class DataStorage extends Thread /*implements Runnable*/ {
 	}
 
 	private void processRequest(Request request) {
-
+		
+		clientsPackage.GlobalList.get().put(System.currentTimeMillis()-request.createTime);
+		
 		RequestType type = request.getType();
 
 		Logger.getInstance().log(request.toString());

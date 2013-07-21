@@ -35,7 +35,8 @@ public class SystemScheduler {
 	private void handleAddRequest(Request request) {
 
 		List<DataStorage> storages = system.getStorages();
-
+		
+		try {
 		Collections.sort(storages, new Comparator<DataStorage>() {
 
 			@Override
@@ -44,6 +45,9 @@ public class SystemScheduler {
 				return (int) ((int) 100*(o1.getFillFactor() - o2.getFillFactor()));
 			}
 		});
+		} catch(Exception ex) {
+			//
+		}
 		
 		
 		/*
