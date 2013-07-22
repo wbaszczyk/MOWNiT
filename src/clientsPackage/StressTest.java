@@ -1,7 +1,9 @@
 package clientsPackage;
 
+import java.io.IOException;
 import java.util.*;
 
+import serverPackage.Config;
 import serverPackage.FileSystem;
 import serverPackage.Request;
 import serverPackage.RequestType;
@@ -11,17 +13,20 @@ public class StressTest {
 
 	public static void main(String[] args) {
 		
+		Config.getInstance().storages = 50;
+		
 		// THREAD - SAFE instantiate
 		GlobalList.get();
 		
 		FileSystem system = new FileSystem();
+		
 		system.run();
 		
 		ServerMonitor monitor = new ServerMonitor(system);
 		new Thread(monitor).start();
+		         
 		
-		
-		int testSize = 60*20;
+		int testSize = Config.getInstance().storages*20;
 		int iter = 0;
 		List<Integer> files = new ArrayList<>();
 		
@@ -72,8 +77,17 @@ public class StressTest {
 			catch (InterruptedException e) { }
 		}
 		
+		// pause ...
+		try {
+			int x = System.in.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		long endTime = System.currentTimeMillis();
 		
+		System.out.println("size: " + GlobalList.get().size() + "! lol.");
 		//System.out.println("workTime: " + (endTime-startTime)/1000.0);
 		//System.out.println("avg request time: " + GlobalList.get().avg()/1000.0);
 		System.out.println("{ " + testSize/20 + ", " + (endTime-startTime)/1000.0 + ", " + GlobalList.get().avg()/1000.0 + " }");

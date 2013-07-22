@@ -6,6 +6,8 @@ public class FileSystem {
 
 	private SystemScheduler systemScheduler;
 	private List<DataStorage> storages;
+	
+	//private Config cfg = Config.getInstance();
 
 	public List<DataStorage> getStorages() {
 		return storages;
@@ -17,7 +19,7 @@ public class FileSystem {
 
 		storages = new ArrayList<>();
 		
-		for(int i=0; i<60; ++i) {
+		for(int i=0; i<Config.getInstance().storages; ++i) {
 			int storageSize = 1024 * (100 + Random.nextInt(50));
 			storages.add(new DataStorage(storageSize));
 		}

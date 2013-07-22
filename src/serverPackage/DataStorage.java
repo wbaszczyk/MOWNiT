@@ -61,6 +61,7 @@ public class DataStorage extends Thread /*implements Runnable*/ {
 	public void addRequest(Request request) {
 
 		try {
+			request.createTime = System.currentTimeMillis();
 			requests.put(request);
 		} catch (InterruptedException e) {
 			Logger.getInstance().log("DataStorage.requests.put() interrupted");

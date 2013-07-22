@@ -18,6 +18,10 @@ public class GlobalList {
 		list.add(d);
 	}
 	
+	public synchronized int size() {
+		return list.size();
+	}
+	
 	public synchronized double avg() {
 		double sum = 0.0;
 		for(double d : list)
