@@ -22,6 +22,16 @@ public class GlobalList {
 		return list.size();
 	}
 	
+	public synchronized void clear() {
+		list.clear();
+	}
+	
+	public synchronized void dump() {
+		for(double d : list) {
+			System.out.print(d + ", ");
+		}
+	}
+	
 	public synchronized double avg() {
 		double sum = 0.0;
 		for(double d : list)

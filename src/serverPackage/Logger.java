@@ -25,7 +25,7 @@ public class Logger {
 	public synchronized void log(String message) {
 		
 		message = Thread.currentThread() + " : " + message;
-		logFile.println(message);
+		//logFile.println(message);
 		logMessages.add(message);
 	}
 	

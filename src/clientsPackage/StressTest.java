@@ -13,7 +13,7 @@ public class StressTest {
 
 	public static void main(String[] args) {
 		
-		Config.getInstance().storages = 50;
+		Config.getInstance().storages = 15;
 		
 		// THREAD - SAFE instantiate
 		GlobalList.get();
@@ -45,6 +45,7 @@ public class StressTest {
 		try { Thread.sleep(1000); }
 		catch (InterruptedException e) { }
 		
+		GlobalList.get().clear();
 		
 		long startTime = System.currentTimeMillis();
 		
@@ -73,11 +74,16 @@ public class StressTest {
 				break;
 			}
 			
-			try { Thread.sleep(30); }
+			try { Thread.sleep(3); }
 			catch (InterruptedException e) { }
+			
+			System.out.println("main loop");
 		}
 		
+		System.out.println("main done at: " + (System.currentTimeMillis()-startTime)/1000.0);
+		
 		// pause ...
+		
 		try {
 			int x = System.in.read();
 		} catch (IOException e) {
@@ -86,6 +92,8 @@ public class StressTest {
 		}
 		
 		long endTime = System.currentTimeMillis();
+		
+		GlobalList.get().dump();
 		
 		System.out.println("size: " + GlobalList.get().size() + "! lol.");
 		//System.out.println("workTime: " + (endTime-startTime)/1000.0);
